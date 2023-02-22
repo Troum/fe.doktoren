@@ -1,0 +1,10 @@
+.dk {
+  &__education-form-fields__container {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 30px;
+    grid-auto-rows: 70px;
+    grid-row-gap: 30px;
+  }
+}

@@ -1,0 +1,12 @@
+.dk {
+  &__form__experience-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 15px;
+    grid-auto-rows: minmax(100px, 120px);
+  }
+  &__form__experience__item {
+    display: flex;
+    align-items: center;
+  }
+}
