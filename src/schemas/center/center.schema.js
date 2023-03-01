@@ -16,10 +16,12 @@ export const CenterSchema = Yup.object({
     .required()
     .label('Age group'),
   specialization: Yup
-    .number()
+    .array(Yup.number())
+    .nullable(true)
     .label('Specialization'),
   type: Yup
-    .number()
+    .array(Yup.number())
+    .nullable(true)
     .label('Type'),
   address: Yup
     .string()

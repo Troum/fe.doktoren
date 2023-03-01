@@ -6,7 +6,7 @@
                                :items="items"
                                :routes="routes"
                                :storage="storage"
-                               entity="center"/>
+                               entity="specialization"/>
       </v-col>
     </v-row>
   </v-container>
@@ -14,53 +14,38 @@
 
 <script setup>
 import {computed, onBeforeMount, ref} from "vue";
-import {centerStorage} from "@/store";
+import {specializationStorage} from "@/store";
 import IndexTableComponent from "@/components/IndexTableComponent.vue";
 
 const routes = ref({
-  create: 'centers/create',
-  edit: 'centers/edit'
+  create: 'specializations/create',
+  edit: 'specializations/edit'
 })
 
 const headers = ref([
   {
     key: 'id',
     title: '#',
-    sortable: true
+    sortable: true,
+    width: '10%'
   },
   {
     key: 'name',
-    title: 'Medical center name',
-    sortable: true
-  },
-  {
-    key: 'city',
-    title: 'City',
-    sortable: true
-  },
-  {
-    key: 'address.address',
-    title: 'Address',
-    value: (item) => {
-      return `${item.address?.address}, ${item.address?.postal_code}`
-    },
-    sortable: true
-  },
-  {
-    key: 'address.map_url',
-    title: 'Link to map',
-    sortable: true
+    title: 'Type name',
+    sortable: true,
+    width: '75%'
   }
 ])
 
-const storage = centerStorage()
+const storage = specializationStorage()
 
 const items = computed(() => {
-  return storage.getCenters
+  return storage.getSpecializations
 })
 
 onBeforeMount(() => {
-  storage.index()
+  storage
+    .index()
 })
 
 </script>

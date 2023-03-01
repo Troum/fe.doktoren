@@ -4,18 +4,19 @@
       <v-col class="mx-auto" cols="10" lg="12">
         <v-card :min-height="250" class="px-3 py-3">
           <v-card-title class="mb-4">
-            Update medical center specialization
+            Add new medical center type
           </v-card-title>
-          <v-card-text class="dk__edit-form__first-line">
-            <text-field-with-validation label="Enter specialization name"
-                                        placeholder="Specialization name"
+          <v-card-text class="dk__create-form__first-line">
+            <text-field-with-validation label="Enter type name"
+                                        placeholder="Type name"
                                         name="name" type="text"/>
           </v-card-text>
           <v-card-actions class="d-flex align-center justify-end">
             <v-btn :min-width="$vuetify.display.width * 0.1"
+                   :loading="loadingStore.getSubmitLoading"
                    class="mb-4"
                    color="primary"
-                   @click="confirmUpdate"
+                   @click="onSubmit"
                    variant="tonal">Save
             </v-btn>
           </v-card-actions>
@@ -26,11 +27,12 @@
 </template>
 
 <script setup>
+import _ from 'lodash'
 import {useForm} from 'vee-validate'
-import {computed, inject, onBeforeMount, ref} from "vue";
-import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
+import {computed, ref} from "vue";
+import {useRouter} from "vue-router";
 import {
-  cityStorage, confirmationDialogStorage,
+  cityStorage,
   countryStorage, loadingStorage, specializationStorage, typeStorage
 } from "@/store";
 import {CitySchema} from "@/schemas/city/city.schema";
@@ -40,55 +42,27 @@ import AutocompleteWithValidationComponent from "@/components/form-fields/Autoco
 import {SpecializationSchema} from "@/schemas/specialization/specialization.schema";
 import {TypeSchema} from "@/schemas/type/type.schema";
 
-
-const updated = ref(false)
-
 const router = useRouter()
-const route = useRoute()
+const loadingStore = loadingStorage()
 const typeStore = typeStorage()
 const typeSchema = TypeSchema
-const {values, errors, setFieldValue, setValues, meta, handleSubmit} = useForm({
+const {values, errors, setFieldValue, handleSubmit} = useForm({
   validationSchema: typeSchema,
   validateOnMount: false
 })
 
-const loadingStore = loadingStorage()
-
-onBeforeMount(() => {
-  typeStore
-    .show(route.params.id)
-    .then(() => {
-      setValues(typeStore.getType)
-    })
-})
-
-onBeforeRouteLeave(async () => {
-  if (meta.value.touched && !updated.value) {
-    await confirmationDialogStorage().routeLeave({
-      message: 'Do you really want to leave this page? All unsaved dat will be lost',
-      action: () => router.push({name: 'types.index'})
-    })
-  }
-
-})
-function confirmUpdate() {
-  confirmationDialogStorage()
-    .open({
-      message: 'Do you really want to update this medical center type\'s info?',
-      action: () => onSubmit()
-    })
-}
 const onSubmit = handleSubmit((values) => {
+  loadingStore.setLoading('submit', true)
   typeStore
-    .update(typeStore.getType.id, values)
+    .store(values)
     .then(() => {
-      updated.value = true
+      loadingStore.setLoading('submit', false)
       router.push({name: 'types.index'})
     })
-    .catch()
+    .catch(() => loadingStore.setLoading('submit', false))
 })
 
 </script>
 <style scoped lang="scss">
-@import "@/assets/styles/views/types/edit.scss";
+@import "@/assets/styles/views/types/create.scss";
 </style>

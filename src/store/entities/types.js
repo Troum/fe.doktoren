@@ -1,44 +1,48 @@
 import {defineStore} from 'pinia'
 import Api from "@/classes/api";
-export default defineStore('positions', {
+
+export default defineStore('types', {
   state: () => ({
-    positions: [],
-    position: {}
+    types: [],
+    type: {}
   }),
   getters: {
-    getPositions: (state) => state['positions'],
-    getPosition: (state) => state['position'],
+    getTypes: (state) => state['types'],
+    getType: (state) => state['type']
   },
   actions: {
     async index() {
       await Api
-        .positions()
+        .types()
         .index()
-        .then((response) => this.setPositions(response.data.items))
+        .then((response) => this.setTypes(response.data.items))
     },
     async store(data) {
       return await Api
-        .positions()
+        .types()
         .store(data)
     },
     async show(id) {
       await Api
-        .positions()
+        .types()
         .show(id)
     },
     async update(id, data) {
       return await Api
-        .positions()
+        .types()
         .update(id, data)
+        .then((response) => {
+          this.type = response.data.item
+        })
     },
     async destroy(id) {
       return await Api
-        .positions()
+        .types()
         .destroy(id)
-        .then((response) => this.setPositions(response.data.items))
+        .then((response) => this.setTypes(response.data.items))
     },
-    setPositions(positions) {
-      this.positions = positions
+    setTypes(types) {
+      this.types = types
     }
   },
 })

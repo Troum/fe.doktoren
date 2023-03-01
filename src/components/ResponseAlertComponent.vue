@@ -4,12 +4,12 @@
            variant="flat"
            class="rounded-0"
            elevation="2"
-           position="absolute"
+           position="fixed"
            style="z-index: 1009; width: 100%"
            closable
            :close-icon="mdiClose"
            :color="response['getColor']"
-           :text="response['getMessage']"></v-alert>
+           :text="response['getMessage']" />
 </template>
 
 <script setup>

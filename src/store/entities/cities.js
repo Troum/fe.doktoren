@@ -19,7 +19,6 @@ export default defineStore('cities', {
       await Api
         .cities()
         .store(data)
-        .then((response) => this.setCities(response.data.items))
     },
     async show(id) {
       await Api

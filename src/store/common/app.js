@@ -43,27 +43,17 @@ export default defineStore('common', {
         title: 'Doktor'
       }
     ],
-    routeChanging: false,
-    specializations: [],
-    types: []
+    routeChanging: false
   }),
   getters: {
     getGenders: (state) => state['genders'],
     getAgeGroups: (state) => state['ageGroups'],
     getAcademyDegrees: (state) => state['academyDegrees'],
-    getRouteChanging: (state) => state['routeChanging'],
-    getSpecializations: (state) => state['specializations'],
-    getTypes: (state) => state['types'],
+    getRouteChanging: (state) => state['routeChanging']
   },
   actions: {
     onRouteChanging (status) {
       this.routeChanging = status
-    },
-    setSpecializations (specializations) {
-      this.specializations = specializations
-    },
-    setTypes (types) {
-      this.types = types
     }
   }
 })

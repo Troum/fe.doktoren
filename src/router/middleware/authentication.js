@@ -1,5 +1,13 @@
 import Api from "@/classes/api";
-import {centerStorage, universityStorage, specialityStorage, cityStorage, countryStorage} from "@/store";
+import {
+  centerStorage,
+  universityStorage,
+  specialityStorage,
+  cityStorage,
+  countryStorage,
+  commonStorage,
+  typeStorage, specializationStorage, positionStorage
+} from "@/store";
 import Loader from "@/classes/loader";
 
 export default (to, from, next) => {
@@ -16,6 +24,9 @@ export default (to, from, next) => {
             universityStorage().setUniversities(response.data.universities)
             specialityStorage().setSpecialities(response.data.specialities)
             countryStorage().setCountries(response.data.countries)
+            typeStorage().setTypes(response.data.types)
+            specializationStorage().setSpecializations(response.data.specializations)
+            positionStorage().setPositions(response.data.positions)
           })
       )
       .then(() => {

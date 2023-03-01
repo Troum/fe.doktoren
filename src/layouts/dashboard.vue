@@ -58,6 +58,7 @@
     <v-footer/>
     <response-alert-component />
     <confirm-dialog />
+    <map-dialog />
     <template v-if="changingRoute">
       <route-loading-screen transition="fade-transition"/>
     </template>
@@ -74,7 +75,9 @@ import {
   mdiFlag,
   mdiHospital,
   mdiHospitalBox,
-  mdiLogout
+  mdiLogout,
+  mdiAccountDetails,
+  mdiFormatListBulletedType
 } from '@mdi/js'
 
 import {computed} from "vue"
@@ -85,6 +88,7 @@ import ResponseAlertComponent from "@/components/ResponseAlertComponent.vue";
 import RouteLoadingScreen from "@/components/RouteLoadingScreen.vue";
 import Loader from "@/classes/loader";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog.vue";
+import MapDialog from "@/components/dialogs/MapDialog.vue";
 
 const router = useRouter()
 const userStore = userStorage()
@@ -135,7 +139,17 @@ const menu = [
     icon: mdiFlag,
     text: 'Countries',
     route: '/dashboard/countries'
-  }
+  },
+  {
+    icon: mdiAccountDetails,
+    text: 'Specializations',
+    route: '/dashboard/specializations'
+  },
+  {
+    icon: mdiFormatListBulletedType,
+    text: 'Types',
+    route: '/dashboard/types'
+  },
 ]
 function logout() {
   Api.logout()

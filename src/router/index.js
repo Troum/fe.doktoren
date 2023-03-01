@@ -204,6 +204,54 @@ const routes = [
           authenticated: true
         },
       },
+      {
+        path: 'types',
+        name: 'types.index',
+        component: () => import('@/views/entities/types/index.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
+      {
+        path: 'types/create',
+        name: 'types.create',
+        component: () => import('@/views/entities/types/create.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
+      {
+        path: 'types/edit/:id',
+        name: 'types.edit',
+        component: () => import('@/views/entities/types/edit.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
+      {
+        path: 'specializations',
+        name: 'specializations.index',
+        component: () => import('@/views/entities/specializations/index.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
+      {
+        path: 'specializations/create',
+        name: 'specializations.create',
+        component: () => import('@/views/entities/specializations/create.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
+      {
+        path: 'specializations/edit/:id',
+        name: 'specializations.edit',
+        component: () => import('@/views/entities/specializations/edit.vue'),
+        meta: {
+          authenticated: true
+        },
+      },
     ]
   }
 ]

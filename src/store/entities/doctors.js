@@ -41,7 +41,6 @@ export default defineStore('doctors', {
       return await Api
         .doctors()
         .destroy(id)
-        .then((response) => this.doctors = response.data.items)
     },
     async avatar(data) {
       return await Api

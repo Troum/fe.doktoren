@@ -60,6 +60,7 @@ const cities = computed(() => {
 const onSubmit = handleSubmit((values) => {
   universityStore
     .store(values)
+    .then(() => router.push({name: 'universities.index'}))
     .catch()
 })
 

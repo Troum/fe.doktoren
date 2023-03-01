@@ -23,6 +23,10 @@
         </v-btn>
       </v-toolbar>
     </template>
+    <template v-slot:item.address.map_url="{ item }">
+      <v-btn variant="flat"
+             max-height="30" @click="openMap(item.raw.address['map_url'])">OPEN MAP</v-btn>
+    </template>
     <template v-slot:item.actions="{ item }">
       <v-btn icon size="28" :disabled="tableOptions.disabled"
              class="mr-2"
@@ -50,7 +54,7 @@
 import {mdiDelete, mdiMagnify, mdiPencil, mdiPlus} from '@mdi/js'
 import {useRouter} from 'vue-router'
 import {computed, ref} from "vue";
-import {confirmationDialogStorage} from "@/store";
+import {confirmationDialogStorage, mapDialogStorage} from "@/store";
 
 const props = defineProps({
   items: {
@@ -86,6 +90,8 @@ const props = defineProps({
 })
 
 const confirmationDialog = confirmationDialogStorage()
+
+const mapDialog = mapDialogStorage()
 
 const needle = ref('')
 
@@ -123,6 +129,10 @@ async function deleteItem(item) {
       message: 'Do you really want to delete this item?',
       action: () => props.storage.destroy(item.id)
     })
+}
+function openMap (src) {
+  mapDialog.setSrc(src)
+    .then(() => mapDialog.open())
 }
 
 </script>

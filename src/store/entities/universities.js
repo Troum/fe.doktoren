@@ -21,7 +21,6 @@ export default defineStore('universities', {
       await Api
         .universities()
         .store(data)
-        .then((response) => this.setUniversities(response.data.items))
     },
     async show(id) {
       await Api

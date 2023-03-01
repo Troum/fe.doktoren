@@ -30,7 +30,6 @@ export default defineStore('centers', {
         .show(id)
         .then((response) => {
           this.center = response.data.item
-          avatarStorage().setPreview(response.data.item?.icon)
         })
     },
     async update(id, data) {

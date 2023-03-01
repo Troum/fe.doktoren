@@ -4,6 +4,7 @@ import {responseStorage} from "@/store";
 
 const baseURL = import.meta.env.VITE_APP_API_URL
 const cityAPIkey = import.meta.env.VITE_APP_API_CITY
+const positionStackAPIkey = import.meta.env.VITE_APP_API_POSITION_STACK
 const {cookies} = useCookies()
 const _axios = axios.create()
 
@@ -179,10 +180,66 @@ class API {
 
   specialities() {
     return {
+      storeAvatar: (form) => {
+        const data = this.prepareFormDataRequest(form)
+        return _axios({
+          method: 'POST',
+          url: `${baseURL}/avatar/specialities`,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
       index: () => {
         return _axios({
           method: 'GET',
           url: `${baseURL}/specialities`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      store: (data) => {
+        return _axios({
+          method: 'POST',
+          url: `${baseURL}/specialities`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      show: (speciality) => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/specialities/${speciality}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      update: (speciality, data) => {
+        return _axios({
+          method: 'PATCH',
+          url: `${baseURL}/specialities/${speciality}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      search: (name) => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/search?model=specialities&needle=${name}`
+        })
+      },
+      destroy: (speciality) => {
+        return _axios({
+          method: 'DELETE',
+          url: `${baseURL}/specialities/${speciality}`,
           headers: {
             Authorization: `Bearer ${cookies.get('auth')?.token}`
           }
@@ -271,6 +328,44 @@ class API {
             Authorization: `Bearer ${cookies.get('auth')?.token}`
           }
         })
+      },
+      store: (data) => {
+        return _axios({
+          method: 'POST',
+          url: `${baseURL}/positions`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      show: (position) => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/positions/${position}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      update: (position, data) => {
+        return _axios({
+          method: 'PATCH',
+          url: `${baseURL}/positions/${position}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      destroy: (position) => {
+        return _axios({
+          method: 'DELETE',
+          url: `${baseURL}/positions/${position}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
       }
     }
   }
@@ -325,6 +420,58 @@ class API {
         return _axios({
           method: 'DELETE',
           url: `${baseURL}/universities/${university}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      }
+    }
+  }
+
+  types() {
+    return {
+      index: () => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/types`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      store: (data) => {
+        return _axios({
+          method: 'POST',
+          url: `${baseURL}/types`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      show: (type) => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/types/${type}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      update: (type, data) => {
+        return _axios({
+          method: 'PATCH',
+          url: `${baseURL}/types/${type}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      destroy: (type) => {
+        return _axios({
+          method: 'DELETE',
+          url: `${baseURL}/types/${type}`,
           headers: {
             Authorization: `Bearer ${cookies.get('auth')?.token}`
           }
@@ -403,6 +550,58 @@ class API {
         return _axios({
           method: 'DELETE',
           url: `${baseURL}/cities/${city}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      }
+    }
+  }
+
+  specializations() {
+    return {
+      index: () => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/specializations`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      store: (data) => {
+        return _axios({
+          method: 'POST',
+          url: `${baseURL}/specializations`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      show: (specialization) => {
+        return _axios({
+          method: 'GET',
+          url: `${baseURL}/specializations/${specialization}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          }
+        })
+      },
+      update: (specialization, data) => {
+        return _axios({
+          method: 'PATCH',
+          url: `${baseURL}/specializations/${specialization}`,
+          headers: {
+            Authorization: `Bearer ${cookies.get('auth')?.token}`
+          },
+          data
+        })
+      },
+      destroy: (specialization) => {
+        return _axios({
+          method: 'DELETE',
+          url: `${baseURL}/specializations/${specialization}`,
           headers: {
             Authorization: `Bearer ${cookies.get('auth')?.token}`
           }

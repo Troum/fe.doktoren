@@ -8,7 +8,7 @@
           </v-card-title>
           <v-card-text class="dk__create-form__first-line">
             <div class="mt-n3">
-              <file-input-component :file="image"/>
+              <file-input-component/>
             </div>
             <text-field-with-validation label="Enter center name"
                                         placeholder="Center name"
@@ -16,9 +16,13 @@
             <select-with-validation
               label="Enter center type"
               name="type"
+              item-value="id"
+              item-title="name"
               :items="types"/>
             <select-with-validation
               label="Enter center specialization"
+              item-value="id"
+              item-title="name"
               name="specialization"
               :items="specializations"/>
           </v-card-text>
@@ -29,7 +33,6 @@
               :items="ageGroups"/>
             <autocomplete-with-validation-component
               :items="cities"
-              :multiple="true"
               item-title="name"
               item-value="id"
               label="Enter centers's city"
@@ -40,6 +43,7 @@
           </v-card-text>
           <v-card-actions class="d-flex align-center justify-end">
             <v-btn :min-width="$vuetify.display.width * 0.1"
+                   :loading="loadingStore['getSubmitLoading']"
                    class="mb-4"
                    color="primary"
                    @click="onSubmit"
@@ -58,7 +62,7 @@ import {computed, inject, onBeforeMount, ref, toRaw} from "vue";
 import {useRouter} from "vue-router";
 import {
   avatarStorage, centerStorage, cityStorage,
-  commonStorage,
+  commonStorage, fileInputStorage, loadingStorage, specializationStorage, typeStorage,
 } from "@/store";
 import {CenterSchema} from "@/schemas/center/center.schema";
 import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
@@ -66,13 +70,14 @@ import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValid
 import SelectWithValidation from "@/components/form-fields/SelectWithValidation.vue";
 import FileInputComponent from "@/components/form-fields/FileInputComponent.vue";
 
-const emitter = inject('emitter')
-
 const router = useRouter()
-const avatar = avatarStorage()
+const avatar = fileInputStorage()
 const common = commonStorage()
+const specialization = specializationStorage()
+const type = typeStorage()
 const cityStore = cityStorage()
 const centerStore = centerStorage()
+const loadingStore = loadingStorage()
 const centerSchema = CenterSchema
 
 const {values, errors, setFieldError, setFieldValue, handleSubmit} = useForm({
@@ -89,30 +94,36 @@ const cities = computed(() => {
     .getCities
 })
 const specializations = computed(() => {
-  return common
+  return specialization
     .getSpecializations
 })
 const types = computed(() => {
-  return common
+  return type
     .getTypes
 })
-const image = ref(null)
 
 const onSubmit = handleSubmit((values) => {
+  loadingStore.setLoading('submit', true)
   centerStore
     .store(values)
     .then((response) => {
-      if (image.value) {
+      if (avatar.getFile) {
         centerStore
-          .avatar({avatar: image.value, slug: response.data.slug})
+          .avatar({avatar: avatar.getFile, slug: response.data.slug})
           .then(() => {
+            loadingStore.setLoading('submit', false)
             router
               .push({name: 'centers.index'})
-              .then(() => centerStore.index())
           })
+          .catch(() => loadingStore.setLoading('submit', false))
+      } else {
+        loadingStore.setLoading('submit', false)
+        router
+          .push({name: 'centers.index'})
       }
     })
-    .catch()
+    .then(() => loadingStore.setLoading('submit', false))
+    .catch(() => loadingStore.setLoading('submit', false))
 
 })
 

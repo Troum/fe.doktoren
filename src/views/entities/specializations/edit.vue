@@ -31,34 +31,35 @@ import {computed, inject, onBeforeMount, ref} from "vue";
 import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
 import {
   cityStorage, confirmationDialogStorage,
-  countryStorage, loadingStorage, specializationStorage, typeStorage
+  countryStorage, loadingStorage, specializationStorage
 } from "@/store";
 import {CitySchema} from "@/schemas/city/city.schema";
 import {mdiMapCheck} from "@mdi/js";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
 import {SpecializationSchema} from "@/schemas/specialization/specialization.schema";
-import {TypeSchema} from "@/schemas/type/type.schema";
 
 
 const updated = ref(false)
 
 const router = useRouter()
 const route = useRoute()
-const typeStore = typeStorage()
-const typeSchema = TypeSchema
-const {values, errors, setFieldValue, setValues, meta, handleSubmit} = useForm({
-  validationSchema: typeSchema,
+
+const specializationStore = specializationStorage()
+
+const specializationSchema = SpecializationSchema
+const {values, errors, setFieldError, setFieldValue, setValues, meta, handleSubmit} = useForm({
+  validationSchema: specializationSchema,
   validateOnMount: false
 })
 
 const loadingStore = loadingStorage()
 
 onBeforeMount(() => {
-  typeStore
+  specializationStore
     .show(route.params.id)
     .then(() => {
-      setValues(typeStore.getType)
+      setValues(specializationStore.getSpecialization)
     })
 })
 
@@ -66,7 +67,7 @@ onBeforeRouteLeave(async () => {
   if (meta.value.touched && !updated.value) {
     await confirmationDialogStorage().routeLeave({
       message: 'Do you really want to leave this page? All unsaved dat will be lost',
-      action: () => router.push({name: 'types.index'})
+      action: () => router.push({name: 'specializations.index'})
     })
   }
 
@@ -74,21 +75,21 @@ onBeforeRouteLeave(async () => {
 function confirmUpdate() {
   confirmationDialogStorage()
     .open({
-      message: 'Do you really want to update this medical center type\'s info?',
+      message: 'Do you really want to update this medical center specialization\'s info?',
       action: () => onSubmit()
     })
 }
 const onSubmit = handleSubmit((values) => {
-  typeStore
-    .update(typeStore.getType.id, values)
+  specializationStore
+    .update(specializationStore.getSpecialization.id, values)
     .then(() => {
       updated.value = true
-      router.push({name: 'types.index'})
+      router.push({name: 'specialization.index'})
     })
     .catch()
 })
 
 </script>
 <style scoped lang="scss">
-@import "@/assets/styles/views/types/edit.scss";
+@import "@/assets/styles/views/specializations/edit.scss";
 </style>
