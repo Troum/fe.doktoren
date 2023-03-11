@@ -20,6 +20,7 @@ import cities from "@/store/entities/cities";
 import loading from "@/store/common/loading";
 import fileInput from "@/store/components/fileInput";
 import mapDialog from "@/store/components/dialogs/map.dialog";
+import districtsDialog from "@/store/components/dialogs/districts.dialog";
 
 export const doctorStorage = doctors
 export const positionStorage = positions
@@ -35,6 +36,7 @@ export const confirmationDialogStorage = confirmationDialog
 export const educationDialogStorage = educationDialog
 export const courseDialogStorage = courseDialog
 export const mapDialogStorage = mapDialog
+export const districtsDialogStorage = districtsDialog
 export const userStorage = user
 export const responseStorage = response
 export const countryStorage = countries

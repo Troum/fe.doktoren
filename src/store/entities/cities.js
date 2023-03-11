@@ -33,10 +33,6 @@ export default defineStore('cities', {
         .cities()
         .update(id, data)
     },
-    async getCoordinates(city) {
-      return Api
-        .getCoordinates(city)
-    },
     setCities(cities) {
       this.cities = cities
     }

@@ -16,13 +16,6 @@
               item-title="name"
               item-value="id"
               :items="countries"/>
-            <v-btn @click="getCoordinates"
-                   :color="errors.hasOwnProperty('name') ? 'error' : 'primary-darken-1'"
-                   :loading="loadingStore.getActionLoading"
-                   block variant="tonal" height="56"
-                   :prepend-icon="mdiMapCheck">
-              {{ values.coordinates ? 'coordinates are stored' : 'get coordinates' }}
-            </v-btn>
           </v-card-text>
           <v-card-actions class="d-flex align-center justify-end">
             <v-btn :min-width="$vuetify.display.width * 0.1"

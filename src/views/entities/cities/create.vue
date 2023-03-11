@@ -16,16 +16,12 @@
               item-title="name"
               item-value="id"
               :items="countries"/>
-            <v-btn @click="getCoordinates"
-              :loading="loadingStore.getActionLoading"
-              :disabled="!_.isEmpty(values.coordinates)"
-              :color="errors.hasOwnProperty('name') ? 'error' : 'primary-darken-1'"
-              block variant="tonal" height="56"
-              :prepend-icon="mdiMapCheck">
-              {{
-                values.coordinates ? 'coordinates are stored' :
-                (notFound.value ? 'coordinates weren\'t found' : 'get coordinates' )
-              }}
+            <v-btn
+              @click="showDistrictDialog"
+              color="primary-darken-1"
+              variant="tonal"
+              :prepend-icon="mdiPlus">
+              Add city district
             </v-btn>
           </v-card-text>
           <v-card-actions class="d-flex align-center justify-end">
@@ -44,57 +40,30 @@
 </template>
 
 <script setup>
-import _ from 'lodash'
 import {useForm} from 'vee-validate'
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import {useRouter} from "vue-router";
-import {
-  cityStorage,
-  countryStorage, loadingStorage
-} from "@/store";
+import {cityStorage, countryStorage, districtsDialogStorage, loadingStorage} from "@/store";
 import {CitySchema} from "@/schemas/city/city.schema";
-import {mdiMapCheck} from "@mdi/js";
+import {mdiPlus} from "@mdi/js";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
 
 const router = useRouter()
 const loadingStore = loadingStorage()
 const cityStore = cityStorage()
+const districtDialog = districtsDialogStorage()
 const countryStore = countryStorage()
-const citySchema = CitySchema
 const {values, errors, setFieldError, setFieldValue, handleSubmit} = useForm({
-  validationSchema: citySchema,
+  validationSchema: CitySchema,
   validateOnMount: false
 })
-const notFound = ref(false)
 
 const countries = computed(() => {
   return countryStore
     .getCountries
 })
 
-function getCoordinates() {
-  loadingStore.setLoading('action', true)
-  if (!values?.name) {
-    setFieldError('name', 'To get coordinates name is required')
-    loadingStore.setLoading('action', false)
-    return
-  }
-  cityStore
-    .getCoordinates(values?.name)
-    .then((response) => {
-      loadingStore.setLoading('action', false)
-      if (response.data.length) {
-        setFieldValue('coordinates', {
-          latitude: response.data[0].latitude,
-          longitude: response.data[0].longitude
-        })
-      } else {
-        notFound.value = true
-      }
-    })
-    .catch(() => loadingStore.setLoading('action', false))
-}
 const onSubmit = handleSubmit((values) => {
   loadingStore.setLoading('submit', true)
   cityStore
@@ -105,6 +74,10 @@ const onSubmit = handleSubmit((values) => {
     })
     .catch(() => loadingStore.setLoading('submit', false))
 })
+
+const showDistrictDialog = () => {
+  districtDialog.open()
+}
 
 </script>
 <style scoped lang="scss">

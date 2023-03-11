@@ -47,17 +47,7 @@ class API {
     }
     return data
   }
-  getCoordinates(city) {
-    return _axios(
-      {
-        method: 'GET',
-        url: `https://api.api-ninjas.com/v1/city?name=${city}`,
-        headers: {
-          'X-Api-Key': `${cityAPIkey}`
-        }
-      }
-    )
-  }
+
   index() {
     return _axios(
       {
