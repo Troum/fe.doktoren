@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia'
 import Api from "@/classes/api";
-import {avatarStorage} from "@/store";
+import _ from "lodash";
 
 export default defineStore('cities', {
   state: () => ({cities: [], city: {}}),
@@ -35,6 +35,9 @@ export default defineStore('cities', {
     },
     setCities(cities) {
       this.cities = cities
+    },
+    getCityForList (id) {
+      return _.find(this.cities, {id: id})
     }
   },
 })

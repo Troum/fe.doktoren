@@ -9,13 +9,13 @@
         <v-card min-height="100">
           <v-card-text class="pa-2">
             <div style="position: absolute; display: flex; column-gap: 5px; top: 12px; right: 12px">
-              <v-bt
+              <v-btn
                 @click="editCourse(course)"
                 color="warning"
                 size="28"
                 variant="tonal" icon>
                 <svg-icon :path="mdiPencil" type="mdi" size="14"/>
-              </v-bt>
+              </v-btn>
               <v-btn
                 @click="removeCourse(course.id)"
                 size="28"

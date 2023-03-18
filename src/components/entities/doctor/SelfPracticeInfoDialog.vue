@@ -4,26 +4,24 @@
             close-on-back>
     <v-card class="pa-0" min-height="150">
       <v-card-title class="d-flex align-center py-4">
-        <span>Add experience info</span>
+        <span>Add self practice info</span>
         <v-spacer/>
         <v-btn :icon="mdiClose" elevation="0" size="x-small" @click="close()"/>
       </v-card-title>
       <v-divider/>
-      <v-card-text class="dk__experience-form-fields__container">
+      <v-card-text class="dk__self-practice-form-fields__container">
         <select-with-validation
-          :items="centers"
+          :items="cities"
           item-title="name"
           item-value="id"
-          label="Choose work place"
-          name="id"
+          label="Choose self-workplace city"
+          name="city"
         />
-        <autocomplete-with-validation-component
-          :items="positions"
-          item-title="name"
-          item-value="id"
-          label="Choose position"
-          name="position"
-        />
+        <text-field-with-validation
+          label="Please fill self-workplace address"
+          placeholder="Address"
+          name="address"
+          type="text" />
         <div style="display: grid; grid-auto-rows: 80px; grid-template-columns: repeat(5, 1fr);grid-column-gap: 15px; grid-column: 1 / -1">
           <years-component
             label="Start date"
@@ -53,13 +51,13 @@
 <script setup>
 import {mdiClose} from "@mdi/js";
 import {useForm} from "vee-validate"
-import {centerStorage, experienceDialogStorage, positionStorage} from "@/store";
-import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
+import {cityStorage, selfPracticeDialogStorage, positionStorage} from "@/store";
 import YearsComponent from "@/components/form-fields/YearsComponent.vue";
 import {computed, inject, onMounted, ref} from "vue";
 import CheckboxWithValidation from "@/components/form-fields/CheckboxWithValidation.vue";
 import {v4 as uuid4} from "uuid";
 import SelectWithValidation from "@/components/form-fields/SelectWithValidation.vue";
+import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 
 const emitter = inject('emitter')
 
@@ -86,20 +84,15 @@ const { setFieldValue, handleSubmit, setErrors, isDirty } = useForm({
   }
 })
 
-const experienceDialog = experienceDialogStorage()
-const centersStore = centerStorage()
-const positionsStore = positionStorage()
+const selfPracticeDialog = selfPracticeDialogStorage()
+const citiesStore = cityStorage()
 
 const show = computed(() => {
-  return experienceDialog.showDialog
+  return selfPracticeDialog.showDialog
 })
 
-const centers = computed(() => {
-  return centersStore.getCenters
-})
-
-const positions = computed(() => {
-  return positionsStore.getPositions
+const cities = computed(() => {
+  return citiesStore.getCities
 })
 
 const onSubmit = handleSubmit((values, { resetForm }) => {
@@ -111,8 +104,8 @@ const onSubmit = handleSubmit((values, { resetForm }) => {
 })
 onMounted(() => {
   setTimeout(() => setErrors({
-    id: undefined,
-    position: undefined,
+    city: undefined,
+    address: undefined,
     start_date: undefined,
     end_date: undefined,
     now: undefined,
@@ -120,17 +113,17 @@ onMounted(() => {
   }), 500)
 })
 
-emitter.on('edit-experience', (experience) => {
+emitter.on('edit-self-practice', (selfPractice) => {
   Object
-    .keys(experience)
+    .keys(selfPractice)
     .forEach(key => {
-      setFieldValue(key, experience[key])
+      setFieldValue(key, selfPractice[key])
     })
-  experienceDialog.open()
+  selfPracticeDialog.open()
 })
 
 function close() {
-  experienceDialog.close()
+  selfPracticeDialog.close()
 }
 function setEndDate() {
   setFieldValue('end_date', new Date().getFullYear())
@@ -138,5 +131,5 @@ function setEndDate() {
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/styles/components/dialogs/experience.dialog.scss";
+@import "@/assets/styles/components/dialogs/selfPractice.dialog.scss";
 </style>

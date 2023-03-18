@@ -1,10 +1,10 @@
 import * as Yup from "yup";
-export const ExperienceSchema = Yup.object({
-  id: Yup.number()
+export const SelfPracticeSchema = Yup.object({
+  city: Yup.number()
     .required()
-    .label('Center'),
-  position: Yup.number()
-    .label('Position'),
+    .label('City'),
+  address: Yup.string()
+    .label('Address'),
   start_date: Yup.number()
     .label('Working start date'),
   end_date: Yup.number()

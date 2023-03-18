@@ -71,8 +71,18 @@
                      @click="dialogs.course.open()"
                      variant="outlined"> courses info
               </v-btn>
+              <v-btn :prepend-icon="mdiPlus"
+                     color="green-darken-2"
+                     height="56"
+                     @click="dialogs.selfPractice.open()"
+                     variant="outlined"> self-practice info
+              </v-btn>
             </div>
           </v-card-text>
+          <template v-if="selfPractice.length">
+            <self-practice-info-list :items="selfPracticeList"
+                              :remove-action="removeSelfPractice"/>
+          </template>
           <template v-if="experienceList.length">
             <experience-info-list :items="experienceList"
                                   :remove-action="removeExperience"/>
@@ -109,6 +119,9 @@
   <courses-info-dialog
     :schema="courseSchema"
     :method="addCourse"/>
+  <self-practice-info-dialog
+    :schema="selfPracticeSchema"
+    :method="addSelfPractice"/>
 </template>
 
 <script setup>
@@ -121,7 +134,7 @@ import {
   courseDialogStorage,
   doctorStorage,
   educationDialogStorage,
-  experienceDialogStorage,
+  experienceDialogStorage, selfPracticeDialogStorage,
   specialityStorage,
   universityStorage
 } from "@/store";
@@ -144,6 +157,9 @@ import SelectWithValidation from "@/components/form-fields/SelectWithValidation.
 import TextareaWithValidation from "@/components/form-fields/TextareaWithValidation.vue";
 import {v4 as uuid4} from "uuid";
 import _ from 'lodash'
+import SelfPracticeInfoDialog from "@/components/entities/doctor/SelfPracticeInfoDialog.vue";
+import {SelfPracticeSchema} from "@/schemas/doctor/selfPractice.schema";
+import SelfPracticeInfoList from "@/components/entities/doctor/SelfPracticeInfoList.vue";
 
 const emitter = inject('emitter')
 
@@ -154,6 +170,7 @@ const doctorsStore = doctorStorage()
 const specialitiesStore = specialityStorage()
 const universitiesStore = universityStorage()
 const doctorSchema = DoctorSchema
+const selfPracticeSchema = SelfPracticeSchema
 const experienceSchema = ExperienceSchema
 const educationSchema = EducationSchema
 const courseSchema = CourseSchema
@@ -187,9 +204,11 @@ const genders = computed(() => {
 const dialogs = {
   experience: experienceDialogStorage(),
   education: educationDialogStorage(),
-  course: courseDialogStorage()
+  course: courseDialogStorage(),
+  selfPractice: selfPracticeDialogStorage()
 }
 
+let selfPractice = ref([])
 let experience = ref([])
 let education = ref([])
 let courses = ref([])
@@ -206,11 +225,18 @@ const coursesList = computed(() => {
   return courses.value
 })
 
+const selfPracticeList = computed(() => {
+  return selfPractice.value
+})
+
 onBeforeMount(() => {
   avatar.resetAll()
 })
 
-
+function removeSelfPractice(data) {
+  removeFromArray(selfPractice.value,{id: data.id})
+  setFieldValue('selfPractice', selfPractice.value)
+}
 function removeCourse(data) {
   removeFromArray(courses.value,{id: data.id})
   setFieldValue('courses', courses.value)
@@ -236,6 +262,20 @@ function addExperience(item) {
   validateExperience()
   dialogs
     .experience
+    .close()
+}
+
+function addSelfPractice(item) {
+  const clone = structuredClone(toRaw(item))
+  if (inArray(selfPractice.value, {id: clone.id})) {
+    removeFromArray(selfPractice.value,{id: clone.id})
+    selfPractice.value.push(clone)
+  } else {
+    selfPractice.value.push(clone)
+  }
+  setFieldValue('selfPractice', selfPractice.value)
+  dialogs
+    .selfPractice
     .close()
 }
 

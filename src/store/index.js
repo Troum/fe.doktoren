@@ -21,6 +21,7 @@ import loading from "@/store/common/loading";
 import fileInput from "@/store/components/fileInput";
 import mapDialog from "@/store/components/dialogs/map.dialog";
 import districtsDialog from "@/store/components/dialogs/districts.dialog";
+import selfPracticeDialog from "@/store/components/dialogs/selfPractice.dialog";
 
 export const doctorStorage = doctors
 export const positionStorage = positions
@@ -32,6 +33,7 @@ export const avatarStorage = avatar
 
 export const fileInputStorage = fileInput
 export const experienceDialogStorage = experienceDialog
+export const selfPracticeDialogStorage = selfPracticeDialog
 export const confirmationDialogStorage = confirmationDialog
 export const educationDialogStorage = educationDialog
 export const courseDialogStorage = courseDialog
