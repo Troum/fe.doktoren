@@ -10,6 +10,7 @@ import vuetify from './vuetify'
 import pinia from '../store'
 import router from '../router'
 import pluralizator from "@/plugins/pluralizator";
+import worker from "@/plugins/worker";
 export function registerPlugins(app) {
   loadFonts().then(r => {
   })
@@ -18,4 +19,5 @@ export function registerPlugins(app) {
     .use(pinia)
     .use(router)
     .use(pluralizator)
+    .use(worker)
 }

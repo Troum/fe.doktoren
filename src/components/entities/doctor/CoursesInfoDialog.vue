@@ -42,6 +42,7 @@ import {computed, inject, onMounted} from "vue";
 import YearsComponent from "@/components/form-fields/YearsComponent.vue";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import {useForm} from "vee-validate";
+import {v4 as uuid4} from "uuid";
 
 const props = defineProps({
   method: {
@@ -89,6 +90,9 @@ emitter.on('edit-course', (course) => {
 })
 
 const onSubmit = handleSubmit((values, { resetForm }) => {
+  if (!values.hasOwnProperty('id')) {
+    values.id = uuid4()
+  }
   props.method(values)
   resetForm()
 })

@@ -99,16 +99,16 @@
         </v-card>
       </v-col>
     </v-row>
-    <experience-info-dialog
-      :method="addExperience"
-      :schema="experienceSchema"/>
-    <education-info-dialog
-      :schema="educationSchema"
-      :method="addEducation"/>
-    <courses-info-dialog
-      :schema="courseSchema"
-      :method="addCourse"/>
   </v-container>
+  <experience-info-dialog
+    :method="addExperience"
+    :schema="experienceSchema"/>
+  <education-info-dialog
+    :schema="educationSchema"
+    :method="addEducation"/>
+  <courses-info-dialog
+    :schema="courseSchema"
+    :method="addCourse"/>
 </template>
 
 <script setup>
@@ -157,6 +157,8 @@ const doctorSchema = DoctorSchema
 const experienceSchema = ExperienceSchema
 const educationSchema = EducationSchema
 const courseSchema = CourseSchema
+const inArray = inject('inArray')
+const removeFromArray = inject('removeFromArray')
 
 const {values, errors, setFieldError, setFieldValue, handleSubmit} = useForm({
   validationSchema: doctorSchema,
@@ -210,37 +212,41 @@ onBeforeMount(() => {
 
 
 function removeCourse(data) {
-  experience.value.splice(_.find(courses.value, {id: data.id}), 1)
+  removeFromArray(courses.value,{id: data.id})
   setFieldValue('courses', courses.value)
 }
 function removeEducation(data) {
-  education.value.splice(_.find(education.value, {id: data.id}), 1)
+  removeFromArray(education.value,{id: data.id})
   setFieldValue('education', education.value)
 }
 function removeExperience(data) {
-  experience.value.splice(_.find(experience.value, {id: data.id}), 1)
+  removeFromArray(experience.value,{id: data.id})
   setFieldValue('experience', experience.value)
 }
 
 function addExperience(item) {
   const clone = structuredClone(toRaw(item))
-  if (_.findIndex(experience.value, clone)) {
-    experience.value.splice(_.findIndex(experience.value, {id: clone.id}), 1)
+  if (inArray(experience.value, {id: clone.id})) {
+    removeFromArray(experience.value,{id: clone.id})
     experience.value.push(clone)
-    setFieldValue('experience', experience.value)
-    validateExperience()
   } else {
     experience.value.push(clone)
-    setFieldValue('experience', experience.value)
-    validateExperience()
   }
+  setFieldValue('experience', experience.value)
+  validateExperience()
   dialogs
     .experience
     .close()
 }
 
 function addEducation(item) {
-  education.value.push(structuredClone(toRaw(item)))
+  const clone = structuredClone(toRaw(item))
+  if (inArray(education.value, {id: clone.id})) {
+    removeFromArray(education.value, {id: clone.id})
+    education.value.push(clone)
+  } else {
+    education.value.push(clone)
+  }
   setFieldValue('education', education.value)
   dialogs
     .education
@@ -248,8 +254,13 @@ function addEducation(item) {
 }
 
 function addCourse(item) {
-  values.id = uuid4()
-  courses.value.push(structuredClone(toRaw(item)))
+  const clone = structuredClone(toRaw(item))
+  if (inArray(courses.value, {id: clone.id})) {
+    removeFromArray(courses.value, {id: clone.id})
+    courses.value.push(clone)
+  } else {
+    courses.value.push(clone)
+  }
   setFieldValue('courses', courses.value)
   dialogs
     .course

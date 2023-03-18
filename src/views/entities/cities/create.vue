@@ -24,6 +24,13 @@
               Add city district
             </v-btn>
           </v-card-text>
+          <template v-if="districts.length">
+            <v-card-text class="px-0">
+              <DistrictsList
+                :remove-action="removeDistrict"
+                :items="districts" />
+            </v-card-text>
+          </template>
           <v-card-actions class="d-flex align-center justify-end">
             <v-btn :min-width="$vuetify.display.width * 0.1"
                    :loading="loadingStore.getSubmitLoading"
@@ -37,27 +44,36 @@
       </v-col>
     </v-row>
   </v-container>
+  <districts-dialog :schema="districtSchema" :method="addDistrict" />
 </template>
 
 <script setup>
 import {useForm} from 'vee-validate'
-import {computed} from "vue";
+import {computed, ref, toRaw, inject} from "vue";
 import {useRouter} from "vue-router";
 import {cityStorage, countryStorage, districtsDialogStorage, loadingStorage} from "@/store";
 import {CitySchema} from "@/schemas/city/city.schema";
+import {DistrictSchema} from "@/schemas/city/district.schema";
 import {mdiPlus} from "@mdi/js";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
+import DistrictsDialog from "@/components/entities/city/DistrictDialog.vue";
+import DistrictsList from "@/components/entities/city/DistrictsList.vue";
 
 const router = useRouter()
 const loadingStore = loadingStorage()
 const cityStore = cityStorage()
 const districtDialog = districtsDialogStorage()
 const countryStore = countryStorage()
+const citySchema = CitySchema
+const districtSchema = DistrictSchema
 const {values, errors, setFieldError, setFieldValue, handleSubmit} = useForm({
-  validationSchema: CitySchema,
+  validationSchema: citySchema,
   validateOnMount: false
 })
+const inArray = inject('inArray')
+const removeFromArray = inject('removeFromArray')
+const districts = ref([])
 
 const countries = computed(() => {
   return countryStore
@@ -77,6 +93,23 @@ const onSubmit = handleSubmit((values) => {
 
 const showDistrictDialog = () => {
   districtDialog.open()
+}
+
+const addDistrict = (item) => {
+  const clone = structuredClone(toRaw(item))
+  if (inArray(districts.value, {id: clone.id})) {
+    removeFromArray(districts.value, {id: clone.id})
+    districts.value.push(clone)
+  } else {
+    districts.value.push(clone)
+  }
+  setFieldValue('districts', districts.value)
+  districtDialog
+    .close()
+}
+
+const removeDistrict = (data) => {
+  setFieldValue('districts', removeFromArray(districts.value, {id: data.id}))
 }
 
 </script>

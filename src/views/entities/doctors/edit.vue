@@ -99,16 +99,16 @@
         </v-card>
       </v-col>
     </v-row>
-    <experience-info-dialog
-      :method="addExperience"
-      :schema="experienceSchema"/>
-    <education-info-dialog
-      :schema="educationSchema"
-      :method="addEducation"/>
-    <courses-info-dialog
-      :schema="courseSchema"
-      :method="addCourse"/>
   </v-container>
+  <experience-info-dialog
+    :method="addExperience"
+    :schema="experienceSchema"/>
+  <education-info-dialog
+    :schema="educationSchema"
+    :method="addEducation"/>
+  <courses-info-dialog
+    :schema="courseSchema"
+    :method="addCourse"/>
 </template>
 
 <script setup>

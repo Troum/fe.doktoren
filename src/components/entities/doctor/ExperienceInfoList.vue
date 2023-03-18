@@ -31,7 +31,7 @@
                 (main workplace)
               </template>
             </p>
-            <p><strong>Position:</strong> {{ positionsStore.getPosition(experience.position) }}</p>
+            <p><strong>Position:</strong> {{ positionsStore.getPositionForList(experience.position) }}</p>
             <p><strong>Period:</strong> {{ experience.start_date }} - {{ experience.now ? 'still working' : experience.end_date }}</p>
           </div>
         </v-card-text>

@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="show"
-            :max-width="$vuetify.display.width * 0.75"
+            :max-width="$vuetify.display.width * 0.4"
             close-on-back>
     <v-card class="pa-0" min-height="100">
       <v-card-title class="d-flex align-center py-4">
@@ -15,6 +15,14 @@
           type="text"
           label="Enter district name"
           placeholder="District name"/>
+        <v-combobox
+          variant="outlined"
+          v-model="districts"
+          multiple
+          chips
+          type="text"
+          label="Enter sub-districts of district (if exist)"
+          placeholder="Sub-districts"/>
       </v-card-text>
       <v-divider/>
       <v-card-actions class="py-4">
@@ -29,9 +37,10 @@
 <script setup>
 import {mdiClose} from "@mdi/js";
 import {districtsDialogStorage} from "@/store";
-import {computed, inject, onMounted} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import {useForm} from "vee-validate";
+import {v4 as uuid4} from "uuid";
 
 const props = defineProps({
   method: {
@@ -47,9 +56,10 @@ const props = defineProps({
     required: false
   }
 })
+const districts = ref([])
 const emitter = inject('emitter')
 
-const { handleSubmit, setErrors } = useForm({
+const { handleSubmit, setErrors, setFieldValue, handleReset } = useForm({
   validationSchema: props.schema,
   validateOnMount: false
 })
@@ -76,11 +86,18 @@ emitter.on('edit-district', (district) => {
 })
 
 const onSubmit = handleSubmit((values, { resetForm }) => {
+  if (!values.hasOwnProperty('id')) {
+    values.id = uuid4()
+  }
+  if (districts.value.length) {
+    values.districts = districts.value.join('|')
+  }
   props.method(values)
   resetForm()
 })
 
 function close () {
+  handleReset()
   districtDialog.close()
 }
 

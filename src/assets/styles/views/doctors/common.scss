@@ -5,6 +5,12 @@
     grid-gap: 15px;
     grid-auto-rows: minmax(100px, 120px);
   }
+  &__form__districts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+    grid-auto-rows: minmax(60px, 80px);
+  }
   &__form__experience__item {
     display: flex;
     align-items: center;

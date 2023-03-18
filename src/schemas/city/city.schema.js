@@ -9,7 +9,7 @@ export const CitySchema = Yup.object({
     .required()
     .label('Country'),
   districts: Yup
-    .array(Yup.string)
+    .array(Yup.object())
     .label('Districts'),
   coordinates: Yup
     .object()

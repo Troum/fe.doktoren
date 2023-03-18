@@ -50,6 +50,7 @@ import AutocompleteWithValidationComponent from "@/components/form-fields/Autoco
 import YearsComponent from "@/components/form-fields/YearsComponent.vue";
 import TextFieldWithValidation from "@/components/form-fields/TextFieldWithValidation.vue";
 import CheckboxWithValidation from "@/components/form-fields/CheckboxWithValidation.vue";
+import {v4 as uuid4} from "uuid";
 
 const props = defineProps({
   method: {
@@ -104,6 +105,9 @@ onMounted(() => {
 })
 
 const onSubmit = handleSubmit((values, { resetForm }) => {
+  if (!values.hasOwnProperty('id')) {
+    values.id = uuid4()
+  }
   props.method(values)
   resetForm()
 })

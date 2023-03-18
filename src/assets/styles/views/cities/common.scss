@@ -1,0 +1,8 @@
+.dk {
+  &__form__districts-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+    grid-auto-rows: minmax(40px, 60px);
+  }
+}

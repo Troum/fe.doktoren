@@ -2,9 +2,7 @@
   &__district-form-fields__container {
     padding: 16px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-column-gap: 30px;
+    grid-template-columns: 1fr;
     grid-auto-rows: 80px;
-    grid-row-gap: 30px;
   }
 }

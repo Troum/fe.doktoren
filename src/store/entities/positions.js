@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import Api from "@/classes/api";
+import _ from "lodash-es";
 export default defineStore('positions', {
   state: () => ({
     positions: [],
@@ -39,6 +40,9 @@ export default defineStore('positions', {
     },
     setPositions(positions) {
       this.positions = positions
-    }
+    },
+    getPositionForList(value){
+      return _.find(this.positions, { id: value } )?.name
+    },
   },
 })
