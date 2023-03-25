@@ -90,6 +90,13 @@ onBeforeMount(() => {
     .then(() => {
       setValues(cityStore.getCity)
     })
+    .then(() => {
+      if (Object.prototype.hasOwnProperty.call(cityStore.getCity, 'districts')) {
+        if (cityStore.getCity.districts.length > 0) {
+          districts.value = cityStore.getCity.districts
+        }
+      }
+    })
 })
 
 onBeforeRouteLeave(async () => {
@@ -113,7 +120,7 @@ const confirmUpdate = () => {
 const onSubmit = handleSubmit((values) => {
   loadingStore.setLoading('submit', true)
   cityStore
-    .store(values)
+    .update(route.params.id, values)
     .then(() => {
       loadingStore.setLoading('submit', false)
       router.push({name: 'cities.index'})

@@ -107,9 +107,7 @@ const tableHeaders = computed(() => {
     key: 'actions',
     title: 'Actions'
   }
-
   headers.push(actions)
-
   return headers
 })
 
@@ -120,6 +118,7 @@ const tableOptions = computed(() => {
 const tableRoutes = computed(() => {
   return props.routes
 })
+
 function editItem(item) {
   router.push(`${tableRoutes.value['edit']}/${item.id}`)
 }
@@ -127,7 +126,10 @@ async function deleteItem(item) {
   await confirmationDialog
     .open({
       message: 'Do you really want to delete this item?',
-      action: () => props.storage.destroy(item.id)
+      action: () => {
+        props.storage.destroy(item.id)
+        props.storage.index()
+      }
     })
 }
 function openMap (src) {

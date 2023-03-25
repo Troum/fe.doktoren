@@ -33,6 +33,11 @@ export default defineStore('cities', {
         .cities()
         .update(id, data)
     },
+    async destroy(id) {
+      return await Api
+        .cities()
+        .destroy(id)
+    },
     setCities(cities) {
       this.cities = cities
     },

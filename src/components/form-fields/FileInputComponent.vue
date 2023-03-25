@@ -36,7 +36,7 @@
 
 <script setup>
 import {mdiCropRotate, mdiImagePlus} from '@mdi/js'
-import {onMounted, ref} from "vue";
+import {ref, watch} from "vue";
 import {fileInputStorage} from "@/store";
 
 const props = defineProps({
@@ -51,7 +51,7 @@ const props = defineProps({
 const fileInputStore = fileInputStorage()
 const image = ref('')
 
-onMounted(() => {
+watch(props, () => {
   if (props.src) {
     image.value = props.src
   }

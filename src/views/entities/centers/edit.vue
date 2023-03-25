@@ -8,7 +8,8 @@
           </v-card-title>
           <v-card-text class="dk__create-form__first-line">
             <div class="mt-n3">
-              <file-input-component :src="centerStore['getCenter'].avatar"/>
+              <file-input-component
+                :src="centerStore['getCenter'].avatar"/>
             </div>
             <text-field-with-validation label="Enter center name"
                                         placeholder="Center name"
@@ -62,7 +63,7 @@ import {computed, onBeforeMount, ref} from "vue";
 import {onBeforeRouteLeave, useRoute, useRouter} from "vue-router";
 import {
   centerStorage, cityStorage,
-  commonStorage, fileInputStorage, loadingStorage,
+  commonStorage, fileInputStorage, loadingStorage, specializationStorage, typeStorage,
 } from "@/store";
 import {CenterSchema} from "@/schemas/center/center.schema";
 import AutocompleteWithValidationComponent from "@/components/form-fields/AutocompleteWithValidationComponent.vue";
@@ -76,6 +77,8 @@ const route = useRoute()
 const confirmation = confirmationDialog()
 const avatar = fileInputStorage()
 const common = commonStorage()
+const specializationStore = specializationStorage()
+const typeStore = typeStorage()
 const cityStore = cityStorage()
 const centerStore = centerStorage()
 const loadingStore = loadingStorage()
@@ -95,11 +98,11 @@ const cities = computed(() => {
     .getCities
 })
 const specializations = computed(() => {
-  return common
+  return specializationStore
     .getSpecializations
 })
 const types = computed(() => {
-  return common
+  return typeStore
     .getTypes
 })
 

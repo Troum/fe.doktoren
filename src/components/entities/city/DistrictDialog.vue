@@ -82,6 +82,9 @@ emitter.on('edit-district', (district) => {
     .forEach(key => {
       setFieldValue(key, district[key])
     })
+  for (let districtElementKey in district['districts']) {
+    districts.value.push(district['districts'][districtElementKey])
+  }
   districtDialog.open()
 })
 

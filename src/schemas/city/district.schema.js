@@ -7,5 +7,5 @@ export const DistrictSchema = Yup.object({
     .string()
     .label('District name'),
   districts: Yup
-    .string()
+    .array(Yup.string())
 })

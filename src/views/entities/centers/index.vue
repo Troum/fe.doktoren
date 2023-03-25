@@ -56,7 +56,11 @@ const headers = ref([
 const storage = centerStorage()
 
 const items = computed(() => {
-  return storage.getCenters
+  return storage
+    .getCenters
+    .filter((center) => {
+      return center.id !== 0
+    })
 })
 
 onBeforeMount(() => {
